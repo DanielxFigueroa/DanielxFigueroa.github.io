@@ -1,0 +1,2 @@
+When Dice roll, have the image of every side of die appear on the loading roll.
+Transform project into a game
