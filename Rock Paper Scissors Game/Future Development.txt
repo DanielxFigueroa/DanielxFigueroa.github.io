@@ -1,0 +1,1 @@
+Have choices appear on both sides showcasing player and computer's choice. Results in the center.
