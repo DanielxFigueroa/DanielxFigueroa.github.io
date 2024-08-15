@@ -81,20 +81,71 @@ class budgetTrackerApp:
     def view_entires(self):
         pass
         global df
-        top = tk.Toplevel(self.root)
-        top.title("View Entries")
+        self.top = tk.Toplevel(self.root)
+        self.top.title("View Entries")
 
-        text = tk.Text(top)
+        text = tk.Text(self.top)
         text.pack()
 
-        for row in df.iterrows():
+        for index, row in df.iterrows():
             text.insert(tk.END, "Date: " + row['Date'] + " | Description: " + row['Description'] + " | Amount: " + str(['Amount']) + " | Type: " + row['Type'] + "\n")
-         
+
+            edit_button = tk.Button(self.top, text="Edit", command= lambda i=index: self.edit_entry(i))
+            delete_button = tk.Button(self.top, text="Delete", command= lambda i=index: self.delete_entry(i))
+            text.window_create(tk.END, window=edit_button)
+            text.window_create(tk.END, window=delete_button)
+            text.insert(tk.END, "\n\n")
+
+    def edit_entry(self, index):
+        global df
+        self.edit_top = tk.Toplevel(self.root)
+        self.edit_top.title("Edit Entry")
+
+        self.edit_date = tk.Entry(self.edit_top)
+        self.edit_date.insert(0, df,at[index, 'Date'])
+        self.edit_date.pack()
+
+        self.edit_description = tk.Entry(self.edit_top)
+        self.edit_description.insert(0, df,at[index, 'Description'])
+        self.edit_description.pack()
+
+        self.edit_amount = tk.Entry(self.edit_top)
+        self.edit_amount.insert(0, df,at[index, 'Amount'])
+        self.edit_amount.pack()
+
+        self.edit_type = tk.Entry(self.edit_top)
+        self.edit_type.insert(0, df,at[index, 'Amount'])
+        self.edit_type.pack()
+
+        save_button = tk.Button(self.edit_top, text="Save", command= lambda i=index: self.save_edit(i))
+        save_button.pack()
+    
+    def save_edit(self, index):
+        global df
+        df.at[index, 'Date'] = self.edit_date.get()
+        df.at[index, 'Description'] = self.edit_description.get()
+        df.at[index, 'Amount'] = self.edit_amount.get()
+        df.at[index, 'Type'] = self.edit_type.get()
+
+        df.to_csv('./records.csv', index=False)
+        messagebox.showinfo("Success", "Entry updated successfully!")
+        self.edit_top.destroy()
+        self.top.destroy()
+        self.view_entries()
+
+    def delete_entry(self, index):
+        global df
+        df.drop(index, inplace=True)
+        df.reset_index(drop=True, inplace=True)
+        df.to_csv('./records.csv', index=False)
+        messagebox.showinfo("Success", "Entry deleted successfully!")
+        self.top.destroy()
+        self.view_entries()
 
 root = tk.Tk()
 app = budgetTrackerApp(root)
 root.mainloop()
 
 # TODO: 
-# - Follow Part 2
+# - Write Part 3
 # - Reconstruct Tkinter usage using an alternative GUI library that doesn't rely on Windows GUI
