@@ -1,0 +1,117 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  background-color: #d7c0af;
+}
+
+.hide {
+  display: none;
+}
+
+/* Privacy & Cookie Banner Styling */
+.pc-banner {
+  position: fixed;
+  z-index: 999;
+  background-color: #ffffff;
+  box-shadow: 0 0 2em rgba(5, 0, 31, 0.15);
+  border-radius: 0.5em;
+  margin: 1em;
+  padding: 2em;
+  bottom: 0;
+  animation: 1.5s fadeIn;
+}
+
+.pc-banner-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.pc-banner-body p {
+  margin: 2em 0;
+}
+
+.pc-banner-btns {
+  display: flex;
+
+  button {
+    margin-right: 1em;
+    padding: 1em 4em;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .pc-banner-btns {
+    flex-direction: column;
+    padding: 1em;
+
+    button {
+      padding: 1em;
+      margin: 0.5em;
+    }
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0%);
+    opacity: 1;
+  }
+}
+
+/* Cookie Preferences Modal Styling */
+.pc-prefs-header {
+  flex-direction: column;
+}
+
+.pc-prefs-header-actions {
+  display: flex;
+  margin: 0.5em;
+
+  button {
+    margin: 0 0.5em;
+    padding: 0.5em 2em;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .pc-prefs-header-actions {
+    flex-direction: column;
+
+    button {
+      margin: 0.5em 0;
+      padding: 0.75em 4em;
+    }
+  }
+}
+
+.pc-prefs-body {
+  padding: 2em;
+}
+
+.pc-prefs-intro {
+  border-bottom: 1px solid #808080;
+}
+
+.pc-prefs-option {
+  padding: 1em 0 0 0;
+
+  label {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+  }
+
+  input {
+    margin-right: 1em;
+    transform: scale(1.5);
+  }
+}
