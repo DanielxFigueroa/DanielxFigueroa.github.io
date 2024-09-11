@@ -1,0 +1,25 @@
+<html>
+
+<head>
+    <title>Rive Hello World</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <canvas id="canvas" width="500" height="500"></canvas>
+
+    <script src="https://unpkg.com/@rive-app/canvas@2.7.0"></script>
+    <script>
+        const r = new rive.Rive({
+            src: "rating_animation.riv",
+            canvas: document.getElementById("canvas"),
+            autoplay: true,
+            stateMachines: "State Machine 1",
+            onLoad: () => {
+                r.resizeDrawingSurfaceToCanvas();
+            },
+        });
+    </script>
+</body>
+
+</html>
