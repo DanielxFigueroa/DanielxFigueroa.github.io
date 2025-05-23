@@ -3,7 +3,19 @@ function gtag() {
   dataLayer.push(arguments);
 }
 
-if (localStorage.getItem("consentMode") === null) {
+function setConsent(consent) {
+  const consentMode = {
+    functionality_storage: consent.necessary ? "granted" : "denied",
+    security_storage: consent.necessary ? "granted" : "denied",
+    ad_storage: consent.marketing ? "granted" : "denied",
+    analytics_storage: consent.analytics ? "granted" : "denied",
+    personalization_storage: consent.preferences ? "granted" : "denied",
+  };
+  gtag("consent", "update", consentMode);
+  localStorage.setItem("ga4_consent", JSON.stringify(consentMode));
+}
+
+if (localStorage.getItem("ga4_consent") === null) {
   gtag("consent", "default", {
     ad_storage: "denied",
     analytics_storage: "denied",
@@ -12,17 +24,17 @@ if (localStorage.getItem("consentMode") === null) {
     security_storage: "denied",
   });
 } else {
-  gtag("consent", "default", JSON.parse(localStorage.getItem("consentMode")));
+  gtag("consent", "default", JSON.parse(localStorage.getItem("ga4_consent")));
 }
 
 document.addEventListener("DOMContentLoaded", function () {
   const consentBanner = document.getElementById("pc-banner");
   if (consentBanner) {
-    if (localStorage.getItem("consentMode") === null) {
+    if (localStorage.getItem("ga4_consent") === null) {
       // Consent Banner Accept Button
       document
         .getElementById("pc-banner-btn-accept")
-        .addEventListener("click", (event) => {
+        .addEventListener("click", function () {
           setConsent({
             necessary: true,
             analytics: true,
@@ -35,11 +47,11 @@ document.addEventListener("DOMContentLoaded", function () {
       // Manage Preferences Button
       document
         .getElementById("pc-banner-btn-manage-prefs")
-        .addEventListener("click", (event) => {
+        .addEventListener("click", function () {
           // Cookie Settings Accept Button
           document
             .getElementById("pc-prefs-btn-accept")
-            .addEventListener("click", (event) => {
+            .addEventListener("click", function () {
               setConsent({
                 necessary: true,
                 analytics: true,
@@ -52,7 +64,7 @@ document.addEventListener("DOMContentLoaded", function () {
           // Cookie Settings Decline Button
           document
             .getElementById("pc-prefs-btn-decline")
-            .addEventListener("click", (event) => {
+            .addEventListener("click", function () {
               setConsent({
                 necessary: false,
                 analytics: false,
@@ -65,7 +77,7 @@ document.addEventListener("DOMContentLoaded", function () {
           // Preferences Selection Accept Button
           document
             .getElementById("pc-prefs-btn-save")
-            .addEventListener("click", (event) => {
+            .addEventListener("click", function () {
               setConsent({
                 necessary: document.getElementById("pc-prefs-essential-input")
                   .checked,
@@ -84,7 +96,7 @@ document.addEventListener("DOMContentLoaded", function () {
       // Consent Banner Decline Button
       document
         .getElementById("pc-banner-btn-decline")
-        .addEventListener("click", (event) => {
+        .addEventListener("click", function () {
           setConsent({
             necessary: false,
             analytics: false,
@@ -96,15 +108,3 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 });
-
-function setConsent(consent) {
-  const consentMode = {
-    functionality_storage: consent.necessary ? "granted" : "denied",
-    security_storage: consent.necessary ? "granted" : "denied",
-    ad_storage: consent.marketing ? "granted" : "denied",
-    analytics_storage: consent.analytics ? "granted" : "denied",
-    personalization_storage: consent.preferences ? "granted" : "denied",
-  };
-  gtag("consent", "update", consentMode);
-  localStorage.setItem("consentMode", JSON.stringify(consentMode));
-}
